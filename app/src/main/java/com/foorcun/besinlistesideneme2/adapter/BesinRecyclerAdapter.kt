@@ -4,9 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.foorcun.besinlistesideneme2.R
 import com.foorcun.besinlistesideneme2.model.Besin
+import com.foorcun.besinlistesideneme2.viewmodel.BesinListesiViewModel
+import com.foorcun.besinlistesideneme2.view.BesinDetayiFragmentDirections
+import com.foorcun.besinlistesideneme2.view.BesinListFragmentDirections
+
 
 class BesinRecyclerAdapter(val besinListesi : ArrayList<Besin>) :RecyclerView.Adapter<BesinRecyclerAdapter.BesinViewHolder>() {
 
@@ -30,6 +35,11 @@ class BesinRecyclerAdapter(val besinListesi : ArrayList<Besin>) :RecyclerView.Ad
 //        https://medium.com/@bakshiowen2010/recyclerview-in-android-kotlin-f29228c319cc
        val besinIsmiTextView =  holder.itemView.findViewById<TextView>(R.id.besinIsmi)
         besinIsmiTextView.text = besinListesi.get(position).isim
+
+        holder.itemView.setOnClickListener{
+            val action  = BesinListFragmentDirections.actionBesinListFragmentToBesinDetayiFragment(0)
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {

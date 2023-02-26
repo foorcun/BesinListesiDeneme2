@@ -5,11 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.foorcun.besinlistesideneme2.databinding.FragmentBesinDetayiBinding
+import com.foorcun.besinlistesideneme2.viewmodel.BesinDetayiViewModel
 
 
 class BesinDetayiFragment : Fragment() {
+
+    private lateinit var viewModel : BesinDetayiViewModel
 
     // 1 asama. not: FragmentBesinListesiBinding ilgili fragment xml adina gore duzelt
     private var _binding: FragmentBesinDetayiBinding? = null
@@ -37,6 +43,11 @@ class BesinDetayiFragment : Fragment() {
         arguments?.let {
             besinId = BesinDetayiFragmentArgs.fromBundle(it).besinId
             println(besinId)
+
+            viewModel = ViewModelProviders.of(this).get(BesinDetayiViewModel::class.java)
+            viewModel.roomVerisiAl()
+
+            observeLiveData()
         }
 
 //
@@ -45,6 +56,16 @@ class BesinDetayiFragment : Fragment() {
 //                BesinDetayiFragmentDirections.actionBesinDetayiFragmentToBesinListFragment()
 //            Navigation.findNavController(it).navigate(action)
 //        }
+    }
+
+
+    fun observeLiveData(){
+        viewModel.besinSecilen.observe(this, Observer { besin ->
+
+            besin?.let{
+                binding.besinIsmi.text = besin.isim
+            }
+        })
     }
 
     // 3 asama

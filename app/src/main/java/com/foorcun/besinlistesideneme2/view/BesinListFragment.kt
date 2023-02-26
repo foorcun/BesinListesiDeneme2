@@ -38,6 +38,11 @@ class BesinListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // en basta gone
+        binding.besinHataMesaji.visibility = View.GONE
+        binding.besinListYukleniyor.visibility = View.GONE
+
+        // Navigation with Button
 //        binding.besinListesiButton.setOnClickListener{
 //            val action =
 //                BesinListFragmentDirections.actionBesinListFragmentToBesinDetayiFragment(besinId = 3)
@@ -47,11 +52,11 @@ class BesinListFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(BesinListesiViewModel::class.java)
         viewModel.refreshData()
 
-
+//
         binding.besinListrRecyclerView.layoutManager=LinearLayoutManager(context)
         binding.besinListrRecyclerView.adapter = recyclerBesinAdapter
-
         observeLiveData()
+
     }
 
     fun observeLiveData(){
@@ -60,6 +65,8 @@ class BesinListFragment : Fragment() {
             besinler?.let {
                 binding.besinListrRecyclerView.visibility = View.VISIBLE
                 recyclerBesinAdapter.besinListesiGuncelle(besinler)
+
+
 
             }
         })
@@ -76,6 +83,16 @@ class BesinListFragment : Fragment() {
         })
 
         // YUKLENIYOR BURAYA GELCEK
+        viewModel.besinYukleniyor.observe(this,Observer{loading ->
+            loading?.let{
+                if(it){
+                    binding.besinListYukleniyor.visibility = View.VISIBLE
+                }else{
+                    binding.besinListYukleniyor.visibility = View.GONE
+                }
+
+            }
+        })
     }
 
 
